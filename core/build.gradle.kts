@@ -19,7 +19,7 @@ dependencies {
 tasks {
     withType(KotlinCompile::class.java) {
         kotlinOptions {
-            freeCompilerArgs = listOf("-Xcontext-receivers", "-Xopt-in=kotlin.RequiresOptIn", "-Xlambdas=indy")
+            freeCompilerArgs = listOf("-Xcontext-receivers", "-opt-in=kotlin.RequiresOptIn", "-Xlambdas=indy")
             jvmTarget = "17"
         }
     }

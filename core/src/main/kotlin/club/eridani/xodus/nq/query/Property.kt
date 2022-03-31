@@ -2,17 +2,17 @@
 
 package club.eridani.xodus.nq.query
 
-import club.eridani.xodus.nq.TransactionScope
 import jetbrains.exodus.entitystore.EntityIterable
+import jetbrains.exodus.entitystore.StoreTransaction
 
 @JvmInline
 value class Property(val name: String) {
-    context(TransactionScope, QueryScope) inline infix fun <T> eq(value: Comparable<T>): EntityIterable {
-        return txn.find(entityType, name, value)
+    context(StoreTransaction, QueryScope) inline infix fun <T> eq(value: Comparable<T>): EntityIterable {
+        return find(entityType, name, value)
     }
 
-    context(TransactionScope, QueryScope) inline infix fun startWith(value: String): EntityIterable {
-        return txn.findStartingWith(entityType, name, value)
+    context(StoreTransaction, QueryScope) inline infix fun startWith(value: String): EntityIterable {
+        return findStartingWith(entityType, name, value)
     }
 
 

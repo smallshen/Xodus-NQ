@@ -1,5 +1,5 @@
 package club.eridani.xodus.nq
 
-interface Entity {
+interface QueryEntity {
     val entityType: String
 }

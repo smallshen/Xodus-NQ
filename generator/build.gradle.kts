@@ -2,6 +2,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm")
+//    Use Graal CE for public builds
+//    id("org.endoqa.graal.gradle") version "22.0-JDK18"
 }
 
 group = "club.eridani"
@@ -20,7 +22,7 @@ dependencies {
 tasks {
     withType(KotlinCompile::class.java) {
         kotlinOptions {
-            freeCompilerArgs = listOf("-Xcontext-receivers", "-Xopt-in=kotlin.RequiresOptIn", "-Xlambdas=indy")
+            freeCompilerArgs = listOf("-Xcontext-receivers", "-opt-in=kotlin.RequiresOptIn", "-Xlambdas=indy")
             jvmTarget = "17"
         }
     }
