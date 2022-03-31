@@ -6,6 +6,7 @@ new [context receivers](https://github.com/Kotlin/KEEP/blob/master/proposals/con
 Inspired by [Xodus-DNQ](https://github.com/JetBrains/xodus-dnq)
 
 Goals:
+
 - Typesafe
 - Lightweight
 - Better Output(smaller Java Bytecode output)
@@ -15,6 +16,8 @@ Goals:
 See [Example](core/src/test/kotlin/transactionDsl.kt)
 
 See [Code Generation Example](core/src/test/kotlin/TestGeneratedEntity.kt)
+
+#### Create a new entity
 
 ```kotlin
 store.executeInTransaction {
@@ -27,9 +30,22 @@ store.executeInTransaction {
             gender = "Male",
             bio = "Hi, this is dsl testing."
         )
+    }
+}
+```
+
+#### Query
+
+```kotlin
+store.executeInTransaction {
+    with(it) {
         val testEntities = TestGeneratedEntity.query {
             (name eq "test") or (name startWith "t")
         }
+        val anotherQueryX = TestGeneratedEntity { name startWith "x" }
+        val anotherQueryY = TestGeneratedEntity { name startWith "y" }
+        val anotherQueryZ = TestGeneratedEntity { name startWith "z" }
+        val queryOperation = ((anotherQueryX or anotherQueryY) and anotherQueryZ) + testEntities
     }
 }
 ```
@@ -40,6 +56,7 @@ store.executeInTransaction {
 - Use inline methods
 
 ## TODO
+
 - [X] Basic Examples
 - [ ] DSL Marker Annotation
 - [ ] Entity Link dsl
