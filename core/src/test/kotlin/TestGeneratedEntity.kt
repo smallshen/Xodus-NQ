@@ -6,7 +6,10 @@ import club.eridani.xodus.nq.query.QueryScope
 import club.eridani.xodus.nq.type.BlobString
 import jetbrains.exodus.entitystore.Entity
 import jetbrains.exodus.entitystore.EntityIterable
+import jetbrains.exodus.entitystore.EntityIterator
 import jetbrains.exodus.entitystore.StoreTransaction
+import kotlin.collections.Iterable as KtIterable
+import kotlin.collections.Iterator as KtIterator
 
 private const val entityType = "TestEntity"
 
@@ -65,7 +68,6 @@ value class TestGeneratedEntity(val entity: Entity) : QueryEntity {
         /**
          * This is constructor for creating a new entity
          */
-
         context(StoreTransaction) @JvmStatic operator fun invoke(
             name: String,
             uid: String,
@@ -101,7 +103,19 @@ value class TestGeneratedEntity(val entity: Entity) : QueryEntity {
     }
 
     @JvmInline
-    value class Iterable(val entityIterable: EntityIterable) {
+    value class Iterator(val entityIterator: EntityIterator) : KtIterator<TestGeneratedEntity> {
+        override fun hasNext(): Boolean {
+            return entityIterator.hasNext()
+        }
+
+        override fun next(): TestGeneratedEntity {
+            return TestGeneratedEntity(entityIterator.next())
+        }
+
+    }
+
+    @JvmInline
+    value class Iterable(val entityIterable: EntityIterable) : KtIterable<TestGeneratedEntity> {
 
         val isEmpty: Boolean inline get() = entityIterable.isEmpty
         val size: Long inline get() = entityIterable.size()
@@ -111,13 +125,8 @@ value class TestGeneratedEntity(val entity: Entity) : QueryEntity {
         val sorted: Boolean inline get() = entityIterable.isSortResult
 
 
-        inline fun indexOf(entity: TestGeneratedEntity): Int {
-            return entityIterable.indexOf(entity.entity)
-        }
-
-        inline fun contains(entity: TestGeneratedEntity): Boolean {
-            return entityIterable.contains(entity.entity)
-        }
+        inline fun indexOf(entity: TestGeneratedEntity): Int = entityIterable.indexOf(entity.entity)
+        inline fun contains(entity: TestGeneratedEntity): Boolean = entityIterable.contains(entity.entity)
 
         inline infix fun or(right: Iterable) = Iterable(entityIterable.union(right.entityIterable))
         inline infix fun and(right: Iterable) = Iterable(entityIterable.intersect(right.entityIterable))
@@ -126,15 +135,21 @@ value class TestGeneratedEntity(val entity: Entity) : QueryEntity {
 
         inline fun skip(number: Int) = Iterable(entityIterable.skip(number))
         inline fun take(number: Int) = Iterable(entityIterable.take(number))
+
         inline fun distinct() = Iterable(entityIterable.distinct())
         inline fun selectDistinct(linkName: String) = Iterable(entityIterable.selectDistinct(linkName))
         inline fun selectManyDistinct(linkName: String) = Iterable(entityIterable.selectManyDistinct(linkName))
+
         inline fun first() = TestGeneratedEntity(entityIterable.first!!)
         inline fun firstOrNull() = entityIterable.first?.let { TestGeneratedEntity(it) }
+
         inline fun last() = TestGeneratedEntity(entityIterable.last!!)
         inline fun lastOrNull() = entityIterable.last?.let { TestGeneratedEntity(it) }
+
         inline fun reverse() = Iterable(entityIterable.reverse())
         inline fun asSorted() = Iterable(entityIterable.asSortResult())
+
+        override fun iterator(): KtIterator<TestGeneratedEntity> = Iterator(entityIterable.iterator())
 
 
     }

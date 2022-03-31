@@ -46,6 +46,9 @@ store.executeInTransaction {
         val anotherQueryY = TestGeneratedEntity { name startWith "y" }
         val anotherQueryZ = TestGeneratedEntity { name startWith "z" }
         val queryOperation = ((anotherQueryX or anotherQueryY) and anotherQueryZ) + testEntities
+        queryOperation.forEach {
+            println(it.name)
+        }
     }
 }
 ```
