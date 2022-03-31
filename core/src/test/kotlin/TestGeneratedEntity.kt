@@ -1,4 +1,4 @@
-@file:Suppress("NOTHING_TO_INLINE")
+@file:Suppress("NOTHING_TO_INLINE", "unused")
 
 import club.eridani.xodus.nq.QueryEntity
 import club.eridani.xodus.nq.query.Property
@@ -54,13 +54,11 @@ value class TestGeneratedEntity(val entity: Entity) : QueryEntity {
             if (value == null) entity.deleteProperty("gender")
             else entity.setProperty("gender", value)
         }
-
-    @BlobString
-    var bio: String?
+    @BlobString var bio: String?
         get() = entity.getBlobString("bio")
-        set(value) {
-            if (value == null) entity.deleteBlob("bio")
-            else entity.setBlobString("bio", value)
+        set(v) {
+            if (v == null) entity.deleteBlob("bio")
+            else entity.setBlobString("bio", v)
         }
 
 

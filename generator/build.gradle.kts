@@ -11,11 +11,16 @@ version = "1.0.0"
 
 repositories {
     mavenCentral()
+    mavenLocal() {
+        content {
+            includeGroup("com.squareup")
+        }
+    }
 }
 
 dependencies {
     implementation(kotlin("stdlib"))
-    implementation("com.squareup:kotlinpoet:1.11.0")
+    implementation("com.squareup:kotlinpoet:1.12.0-SNAPSHOT-Context-Receiver")
 
 }
 
