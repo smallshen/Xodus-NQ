@@ -1,5 +1,5 @@
 import club.eridani.xodus.nq.TransactionScope
-import club.eridani.xodus.nq.query.PropertyName
+import club.eridani.xodus.nq.query.Property
 import club.eridani.xodus.nq.query.QueryScope
 import club.eridani.xodus.nq.type.BlobString
 import jetbrains.exodus.entitystore.Entity
@@ -79,11 +79,11 @@ value class TestGeneratedEntity private constructor(private val entity: Entity) 
 
     object Query : QueryScope {
         override val entityType: String = "TestEntity"
-        val name = PropertyName("name")
-        val uid = PropertyName("uid")
-        val email = PropertyName("email")
-        val age = PropertyName("age")
-        val gender = PropertyName("gender")
+        val name = Property("name")
+        val uid = Property("uid")
+        val email = Property("email")
+        val age = Property("age")
+        val gender = Property("gender")
 
     }
 

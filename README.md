@@ -44,3 +44,7 @@ store.transaction {
 - [ ] All Query builder
 - [ ] Generate sources
 - [ ] Generate through Kotlin Compiler Plugin
+
+## Related
+
+- [Context receiver on constructor](https://github.com/Kotlin/KEEP/blob/master/proposals/context-receivers.md#contextual-classes-and-contextual-constructors)
