@@ -5,15 +5,16 @@ import com.squareup.kotlinpoet.*
 fun main(args: Array<String>) {
     val greeterClass = ClassName("", "Greeter")
     val file = FileSpec.builder("", "HelloWorld")
+        .indent("    ")
         .addAnnotation(
             AnnotationSpec.builder(Suppress::class)
-                .addMember("\"NOTHING_TO_INLINE\", \"unused\"")
+                .addMember("%S, %S, %S", "NOTHING_TO_INLINE", "unused", "RedundantVisibilityModifier")
                 .build()
         )
         .addProperty(
             PropertySpec.builder("entityType", String::class)
                 .addModifiers(KModifier.PRIVATE, KModifier.CONST)
-                .initializer("TestEntity")
+                .initializer("%S", "TestEntity")
                 .build()
         )
         .addType(

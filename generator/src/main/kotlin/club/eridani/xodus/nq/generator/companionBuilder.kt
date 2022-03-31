@@ -27,25 +27,24 @@ fun companionBuilder(entityName: String, fields: List<TypeInfo>): TypeSpec.Build
                 }
                 .build()
         )
-        .addType(
-            TypeSpec.objectBuilder("Query")
-                .addSuperinterface(queryScope)
-                .addProperty(
-                    PropertySpec.builder("entityType", String::class)
-                        .initializer(entityName)
-                        .build()
-                )
-                .apply {
-                    fields.forEach { (name, t, _, _) ->
-                        if (t == Type.BlobString) return@forEach
-                        addProperty(
-                            PropertySpec.builder(name, property)
-                                .addAnnotation(JvmStatic::class)
-                                .initializer("%T(%S)", property, name)
-                                .build()
-                        )
-                    }
-                }
+        .addFunction(
+            FunSpec.builder("query")
+                .addAnnotation(JvmStatic::class.asClassName())
+                .addModifiers(KModifier.INLINE)
+                .addParameter("block", LambdaTypeName.get(receiver = localQuery, returnType = entityIterable))
+                .returns(localIterable)
+                .addStatement("return %T(block(Query))", localIterable)
                 .build()
         )
+        .addFunction(
+            FunSpec.builder("invoke")
+                .addAnnotation(JvmStatic::class.asClassName())
+                .addModifiers(KModifier.INLINE)
+                .addModifiers(KModifier.OPERATOR)
+                .addParameter("block", LambdaTypeName.get(receiver = localQuery, returnType = entityIterable))
+                .returns(localIterable)
+                .addStatement("return %T(block(Query))", localIterable)
+                .build()
+        )
+
 }

@@ -24,9 +24,9 @@ fun entityBuilder(entityName: String, fields: List<TypeInfo>): TypeSpec.Builder 
         .addProperty(
             PropertySpec
                 .builder("entityType", String::class)
+                .addModifiers(KModifier.OVERRIDE)
                 .getter(
                     FunSpec.getterBuilder()
-                        .addModifiers(KModifier.OVERRIDE)
                         .addStatement("return %S", entityName)
                         .build()
                 )
@@ -96,6 +96,30 @@ fun entityBuilder(entityName: String, fields: List<TypeInfo>): TypeSpec.Builder 
             }
         }
         .addType(companionBuilder(entityName, fields).build())
+        .addType(
+            TypeSpec.objectBuilder("Query")
+                .addSuperinterface(queryScope)
+                .addProperty(
+                    PropertySpec.builder("entityType", String::class)
+                        .addModifiers(KModifier.OVERRIDE)
+                        .initializer("%S", entityName)
+                        .build()
+                )
+                .apply {
+                    fields.forEach { (name, t, _, _) ->
+                        if (t == Type.BlobString) return@forEach
+                        addProperty(
+                            PropertySpec.builder(name, property)
+                                .addAnnotation(JvmStatic::class)
+                                .initializer("%T(%S)", property, name)
+                                .build()
+                        )
+                    }
+                }
+                .build()
+        )
+        .addType(iteratorBuilder(entityName))
+        .addType(iterableBuilder(entityName))
 
 
 }

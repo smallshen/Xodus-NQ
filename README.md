@@ -64,7 +64,7 @@ store.executeInTransaction {
 - [ ] DSL Marker Annotation
 - [ ] Entity Link dsl
 - [ ] All Query builder
-- [ ] Generate sources
+- [X] Source Code Generation
 - [ ] Generate through Kotlin Compiler Plugin
 
 ## Related

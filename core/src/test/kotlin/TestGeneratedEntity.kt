@@ -88,16 +88,17 @@ value class TestGeneratedEntity(val entity: Entity) : QueryEntity {
         @JvmStatic inline operator fun invoke(block: Query.() -> EntityIterable): Iterable = Iterable(block(Query))
 
 
-        object Query : QueryScope {
-            override val entityType: String = "TestEntity"
+    }
 
-            @JvmStatic val name = Property("name")
-            @JvmStatic val uid = Property("uid")
-            @JvmStatic val email = Property("email")
-            @JvmStatic val age = Property("age")
-            @JvmStatic val gender = Property("gender")
+    object Query : QueryScope {
+        override val entityType: String = "TestEntity"
 
-        }
+        @JvmStatic val name = Property("name")
+        @JvmStatic val uid = Property("uid")
+        @JvmStatic val email = Property("email")
+        @JvmStatic val age = Property("age")
+        @JvmStatic val gender = Property("gender")
+
     }
 
     @JvmInline
@@ -118,8 +119,8 @@ value class TestGeneratedEntity(val entity: Entity) : QueryEntity {
         val isEmpty: Boolean inline get() = entityIterable.isEmpty
         val size: Long inline get() = entityIterable.size()
         val count: Long inline get() = entityIterable.count()
-        val roughCount: Long inline get() = entityIterable.roughCount
         val roughSize: Long inline get() = entityIterable.roughSize
+        val roughCount: Long inline get() = entityIterable.roughCount
         val sorted: Boolean inline get() = entityIterable.isSortResult
 
 
@@ -129,7 +130,7 @@ value class TestGeneratedEntity(val entity: Entity) : QueryEntity {
         inline infix fun or(right: Iterable) = Iterable(entityIterable.union(right.entityIterable))
         inline infix fun and(right: Iterable) = Iterable(entityIterable.intersect(right.entityIterable))
         inline infix fun andNot(right: Iterable) = Iterable(entityIterable.minus(right.entityIterable))
-        inline operator fun plus(right: Iterable) = Iterable(entityIterable.concat(right.entityIterable))
+        inline infix operator fun plus(right: Iterable) = Iterable(entityIterable.concat(right.entityIterable))
 
         inline fun skip(number: Int) = Iterable(entityIterable.skip(number))
         inline fun take(number: Int) = Iterable(entityIterable.take(number))
