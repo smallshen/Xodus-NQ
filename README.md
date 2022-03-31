@@ -3,7 +3,7 @@
 DSL for [Xodus](https://github.com/JetBrains/xodus) based on the
 new [context receivers](https://github.com/Kotlin/KEEP/blob/master/proposals/context-receivers.md)
 
-Inspired from [Xodus-DNQ](https://github.com/JetBrains/xodus-dnq)
+Inspired by [Xodus-DNQ](https://github.com/JetBrains/xodus-dnq)
 
 Goals:
 
@@ -13,19 +13,20 @@ Goals:
 ## Example
 
 See [Example](core/src/test/kotlin/transactionDsl.kt)
+
 See [Code Generation Example](core/src/test/kotlin/TestGeneratedEntity.kt)
 
 ```kotlin
 store.transaction {
     val newEntity = TestGeneratedEntity(
-        "test",
-        "testUid",
-        "test@eridani.club",
-        23,
-        "Male",
-        "Hi, this is dsl testing."
+        name = "test",
+        uid = "testUid",
+        email = "test@eridani.club",
+        age = 23,
+        gender = "Male",
+        bio = "Hi, this is dsl testing."
     )
-    val testEntities = TestGeneratedEntity.query {
+    val testEntities: EntityIterable = TestGeneratedEntity.query {
         (name eq "test") or (name startWith "t")
     }
 }
